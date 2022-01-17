@@ -19,11 +19,6 @@ blogPosts.init(
         post_body: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        created_at: {
-            type: DataTypes.DATE,
-            // add a default value of current date
-            allowNull: false
         }
     },
     {

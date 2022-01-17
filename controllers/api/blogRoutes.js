@@ -10,4 +10,4 @@ router.get('/', (req, res) => {
         })
 })
 
-module.exports = blogRoutes;
+module.exports = blogPosts;
