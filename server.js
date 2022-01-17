@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
 router.get('/', (req, res) => {
-  res.render('Home', {layout: 'main'})
+  res.render('Home', { layout: 'main' })
 })
 
 // turn on connection to db and server
