@@ -3,7 +3,7 @@ const { blogPosts } = require('../../model')
 
 router.get('/', (req, res) => {
     blogPosts.findAll()
-        .then(blogPostDbData => res.json(blogPostsDbData))
+        .then(blogPostDbData => res.send(blogPostsDbData))
         .catch(err => {
             console.log(err);
             res.status(500).json(err)

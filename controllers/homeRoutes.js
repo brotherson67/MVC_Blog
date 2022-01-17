@@ -5,5 +5,7 @@ const { blogPosts } = require('../model');
 
 router.get('/', (req, res) => {
     console.log("You're getting the homepage");
-    res.send('Good Job, youre on the home page')
+    res.render('homepage')
 })
+
+module.exports = router;
