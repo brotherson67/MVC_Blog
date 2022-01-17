@@ -1,24 +1,17 @@
-<link rel="stylesheet" href="./styles.css">
-
-
-
 <nav class="navbar sticky-top navbar-light bg-light">
     <h3>
-        <a id="title" href="/">Randonneé </a>
+        <a id="title" href="/">BlogPost</a>
     </h3>
-    <h6 id="yay">Climb with friends!</h6>
-    {{#if loggedIn}}
-        <a href="/logout"><button id="logout" class="btn-no-style">logout</button></a>
-        
-    {{else}}
-        <div id="menu">
-            {{!-- <a href="/profile">Profile</a> --}}
-            <a href="/login">Login</a>
-            <a href="/signup">Signup</a>
-            {{/if}}
-            <a href="/gear">Profile</a>
-            <a href="/gear">Gear Checklist</a>
-            <a href="/map">Map</a>
-            <a href="/form">Find a partner!</a>
-        </div>
+    <div>
+        {{#if loggedIn}}
+            <a href="/logout"><button id="logout" class="btn-no-style">logout</button></a>
+            
+        {{else}}
+            <div id="menu">
+                <a href="/login">Login</a>
+                <a href="/signup">Signup</a>
+        {{/if}}
+                <a href="/map">Map</a>
+            </div>
+    </div>
 </nav>
