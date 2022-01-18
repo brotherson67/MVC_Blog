@@ -5,7 +5,11 @@ const { blogPosts } = require('../model');
 
 router.get('/', (req, res) => {
     console.log("You're getting the homepage");
-    res.render('homepage')
+    res.render('homepage', {
+        id:1,
+        post_url:'https://handlebarsjs.com/guide/',
+        title: 'Hanglebars Docs'
+    })
 })
 
 module.exports = router;
