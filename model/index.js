@@ -12,5 +12,6 @@ blogPost.belongsTo(User, {
 })
 
 module.exports = {
-    blogPost
+    blogPost,
+    User
 }
