@@ -1,4 +1,3 @@
-const { DATE } = require('mysql/lib/protocol/constants/types');
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -19,6 +18,13 @@ blogPosts.init(
         post_body: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'user',
+                key: 'id'
+            }
         }
     },
     {

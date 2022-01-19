@@ -1,2 +1,2 @@
 const sequelize = require('../config/connection');
-const { User, Post } = require('../model')
+const { User, blogPost } = require('../model')
