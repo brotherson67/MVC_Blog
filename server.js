@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = require('./controllers');
 const sequelize = require('./config/connection');
-const router = require('./controllers/api');
+// const router = require('./controllers/api');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
@@ -21,9 +21,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-router.get('/', (req, res) => {
-  res.render('Home', { layout: 'main' })
-})
+// router.get('/', (req, res) => {
+//   res.render('Home', { layout: 'main' })
+// })
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
