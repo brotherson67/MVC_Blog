@@ -54,6 +54,23 @@ router.get('/:id', (req, res) => {
         console.log(err);
         res.status(500).json(err);
     })
+});
+
+// POST 
+
+router.post('/', (req, res) => {
+    blogPost.create({
+        title: req.body.title,
+        post_body: req.body.post_body,
+        user_id: req.body.user_id
+    })
+    .then(dbPostData => {
+        res.json(dbPostData)
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    })
 })
 
 
