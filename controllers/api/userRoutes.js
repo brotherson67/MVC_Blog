@@ -3,7 +3,7 @@ const { User, blog, blogPost } = require('../../model');
 
 // GET ROUTE(S)
 
-router.get('/', (req, res) => {
+router.get('/:id', (req, res) => {
     User.findOne({
         attributes: {exclude: ['password'] },
         where: {
@@ -32,12 +32,17 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     User.create({
         username: req.body.username,
+        email: req.body.email,
         password: req.body.password
     })
     .then(dbUserData => {
         req.session.save(() => {
             req.session.user
         })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
     })
 })
 
