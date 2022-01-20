@@ -43,6 +43,17 @@ router.get('/:id', (req, res) => {
             }
         ]
     })
+    .then(dbPostData => {
+        if (!dbPostData) {
+            res.status(404).json({ message: 'sorry that post doesn\'t exist' });
+            return;
+        }
+        res.json(dbPostData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    })
 })
 
 
