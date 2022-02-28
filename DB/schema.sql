@@ -1,7 +1,7 @@
 DROP DATABASE IF EXISTS mvc_blog;
 CREATE DATABASE mvc_blog;
 
-USE mvc_blog;
+-- USE mvc_blog;
 
 -- DROP TABLE IF EXISTS blog_posts;
 -- CREATE TABLE blog_posts(
