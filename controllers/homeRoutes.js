@@ -3,25 +3,13 @@ const router = require("express").Router();
 const sequelize = require("../config/connection");
 const { blogPosts } = require("../model");
 
-router.get("/", async (req, res) => {
-  try {
-    const response = await Post.findAll({
-      attributes: ["id", "title", "content", "user_id", "createdAt"],
-      include: [
-        { model: User, attributes: ["username"] },
-        { model: Comment, include: { model: User } },
-      ],
-      order: [["id", "DESC"]],
-    });
-    const posts = response.map((post) => post.get({ plain: true }));
-    res.render("homepage", {
-      posts,
-      loggedIn: req.session.loggedIn,
-      home: true,
-    });
-  } catch (err) {
-    res.status(500);
-  }
+router.get("/", (req, res) => {
+  console.log("You're getting the homepage");
+  res.render("homepage", {
+    id: 1,
+    post_url: "https://handlebarsjs.com/guide/",
+    title: "Hanglebars Docs",
+  });
 });
 
 router.get("/login", (req, res) => {
