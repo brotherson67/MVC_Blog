@@ -1,17 +1,14 @@
 const express = require("express");
-const routes = require("./controllers");
-const sequelize = require("./config/connection");
-// const router = require('./controllers/api');
 const exphbs = require("express-handlebars");
-const path = require("path");
+const sequelize = require("./config/connection");
 const session = require("express-session");
+const helpers = require("./utils/test");
+const path = require("path");
 
-// variable instances
-const app = express();
 const PORT = process.env.PORT || 3001;
-const hbs = exphbs.create({});
+const app = express();
 
-// Create sequelize session with jaws db
+// Create sequelize session
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 let sess;
 if (process.env.JAWSDB_SC) {
@@ -24,7 +21,7 @@ if (process.env.JAWSDB_SC) {
   };
 } else {
   sess = {
-    secret: "IDKWhatToEnter",
+    secret: "somerandomstring",
     cookie: {},
     resave: false,
     saveUninitialized: true,
@@ -33,17 +30,18 @@ if (process.env.JAWSDB_SC) {
 }
 app.use(session(sess));
 
-// middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// turn on routes
-app.use(routes);
-app.use(express.static(path.join(__dirname, "public")));
+// Set server engine to handlebars
+const hbs = exphbs.create({ helpers });
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
-// turn on connection to db and server
+// Server middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(require("./controllers"));
+
+// Start server with sequelize
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log("Now listening on PORT " + PORT));
+  app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
 });

@@ -1,3 +1,12 @@
-<div>
-    You're on the homepage
-</div>
+{{> nav }}
+<h1 id="header">Welcome to the Tech Blog!</h1>
+{{#each posts as |post|}}
+{{> posts}}
+{{/each}}
+{{#if loggedIn}}
+<script src="/JS/dashboard.js"></script>
+<script src="/JS/logout.js"></script>
+{{else}}
+<script src="/JS/login.js"></script>
+<script src="/JS/signup.js"></script>
+{{/if}}
