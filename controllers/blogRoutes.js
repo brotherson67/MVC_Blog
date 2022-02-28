@@ -57,4 +57,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    const response = await Post.update(
+      { title: req.body.title, content: req.body.content },
+      { where: { id: req.params.id } }
+    );
+    if (!response) {
+      res.status(404);
+      return;
+    }
+    res.json(response);
+  } catch (err) {
+    res.status(500);
+  }
+});
+
 module.exports = router;
