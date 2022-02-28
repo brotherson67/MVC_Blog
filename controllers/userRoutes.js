@@ -1,50 +1,58 @@
 const router = require("express").Router();
-const { User, blogPost } = require("../model");
+const { User } = require("../model");
 const withAuth = require("../utils/auth");
 
 // GET ROUTE(S)
 
-router.get("/:id", (req, res) => {
-  User.findOne({
-    attributes: { exclude: ["password"] },
-    where: {
-      id: req.params.id,
-    },
-    include: [
-      {
-        model: blogPost,
-        attributes: ["id", "title", "post_body", "created_at"],
-      },
-    ],
-  })
-    .then((dbUserData) => {
-      if (!dbUserData) {
-        res.status(404).json({ message: "that user doesn't exist" });
-        return;
-      }
-      res.json(dbUserData);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+router.get("/", async (req, res) => {
+  const response = await User.findAll({
+    attributes: ["id", "username", "password"],
+  });
+  res.json(response);
 });
 
-router.post("/", (req, res) => {
-  User.create({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-  })
-    .then((dbUserData) => {
-      req.session.save(() => {
-        req.session.user;
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+// the user needs to login
+router.post("/login", async (req, res) => {
+  try {
+    const response = await User.findOne({
+      where: { username: req.body.username },
     });
+    if (!response) {
+      res.status(404);
+      return;
+    }
+    const validPassword = response.checkPassword(req.body.password);
+    if (!validPassword) {
+      res.status(404);
+      return;
+    }
+    req.session.save(() => {
+      req.session.username = response.username;
+      req.session.user_id = response.id;
+      req.session.loggedIn = true;
+      res.json({ user: response.username, message: "You are now logged in!" });
+    });
+  } catch (err) {
+    res.status(500);
+  }
+});
+
+// POST /user/signup
+router.post("/signup", async (req, res) => {
+  try {
+    const response = await User.create({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    req.session.save(() => {
+      req.session.username = response.username;
+      req.session.user_id = response.id;
+      req.session.loggedIn = true;
+      res.json(response);
+    });
+  } catch (err) {
+    res.status(500);
+  }
 });
 
 module.exports = router;
