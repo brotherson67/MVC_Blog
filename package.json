@@ -1,4 +1,8 @@
 {
+  "engines": {
+    "npm": "8.1.0",
+    "node": "16.3.0"
+  },
   "scripts": {
     "seed": "node seeds/index.js",
     "start": "node server.js"
