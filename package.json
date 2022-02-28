@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "seed": "node seeds/index.js",
+    "start": "node server.js"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^11.0.0",
