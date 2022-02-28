@@ -18,32 +18,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  console.log("--------------FInding Post --------------");
-  blogPost
-    .findOne({
-      where: {
-        id: req.params.id,
-      },
-      attributes: ["id", "post_body", "title", "created_at"],
+router.get("/:id", async (req, res) => {
+  try {
+    const response = await Post.findOne({
+      where: { id: req.params.id },
+      attributes: ["id", "title", "content", "user_id", "createdAt"],
       include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
+        { model: User, attributes: ["username"] },
+        { model: Comment, include: { model: User } },
       ],
-    })
-    .then((dbPostData) => {
-      if (!dbPostData) {
-        res.status(404).json({ message: "sorry that post doesn't exist" });
-        return;
-      }
-      res.json(dbPostData);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
     });
+    if (!response) {
+      res.status(404).json;
+      return;
+    }
+    const post = response.get({ plain: true });
+    res.render("single-post", {
+      post,
+      loggedIn: req.session.loggedIn,
+      home: true,
+    });
+  } catch (err) {
+    res.status(500);
+  }
 });
 
 // POST
