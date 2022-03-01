@@ -1,8 +1,6 @@
 const router = require("express").Router();
 const { User, Comment, blogPost } = require("../../model");
-const sequelize = require("../../config/connection");
 const Auth = require("../../utils/auth");
-const { resolve } = require("path/posix");
 
 // GET /post/
 router.get("/", (req, res) => {

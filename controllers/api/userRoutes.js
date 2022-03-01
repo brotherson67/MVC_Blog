@@ -1,14 +1,17 @@
 const router = require("express").Router();
 const { User } = require("../../model");
-const withAuth = require("../../utils/auth");
+const Auth = require("../../utils/auth");
 
 // GET ROUTE(S)
-
-router.get("/", async (req, res) => {
-  const response = await User.findAll({
-    attributes: ["id", "username", "password"],
-  });
-  res.json(response);
+router.get("/", (req, res) => {
+  User.findAll({
+    attributes: { exclude: ["password"] },
+  })
+    .then((dbUserData) => res.json(dbUserData))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 // the user needs to login
