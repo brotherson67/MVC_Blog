@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { User, Comment, blogPost } = require("../../model");
 const sequelize = require("../../config/connection");
 const withAuth = require("../../utils/auth");
+const { resolve } = require("path/posix");
 
 // GET /post/
 router.get("/", (req, res) => {
@@ -14,32 +15,27 @@ router.get("/", (req, res) => {
       ],
     })
     .then((dbPostData) => res.json(dbPostData))
-    .catch((err) => res.status(400).json(err));
+    .catch((err) => res.status(500).json(err));
 });
 
-router.get("/:id", async (req, res) => {
-  try {
-    const response = await Post.findOne({
+router.get("/:id", (req, res) => {
+  blogPost
+    .findOne({
       where: { id: req.params.id },
-      attributes: ["id", "title", "content", "user_id", "createdAt"],
+      attributes: ["id", "title", "post_body", "user_id"],
       include: [
-        { model: User, attributes: ["username"] },
-        { model: Comment, include: { model: User } },
+        { model: User, attributes: [username] },
+        { model: Comment, attributes: ["commentText"] },
       ],
-    });
-    if (!response) {
-      res.status(404).json;
-      return;
-    }
-    const post = response.get({ plain: true });
-    res.render("single-post", {
-      post,
-      loggedIn: req.session.loggedIn,
-      home: true,
-    });
-  } catch (err) {
-    res.status(500);
-  }
+    })
+    .then((dbPostData) => {
+      if (!dbPostData) {
+        res.status(404).json({ message: "sorry no post found with that id" });
+        return;
+      }
+      res.json(dbPostData);
+    })
+    .catch((err) => res.status(500).json(err));
 });
 
 // POST
