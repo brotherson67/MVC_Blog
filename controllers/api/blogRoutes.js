@@ -1,21 +1,20 @@
 const router = require("express").Router();
 const { User, Comment, blogPost } = require("../../model");
+const sequelize = require("../../config/connection");
+const withAuth = require("../../utils/auth");
 
 // GET /post/
-router.get("/", async (req, res) => {
-  try {
-    console.log("--------------FInding Posts --------------");
-    const response = await Post.findAll({
+router.get("/", (req, res) => {
+  blogPost
+    .findAll({
       attributes: ["id", "title", "user_id"],
       include: [
-        { model: User, attributes: ["username"] },
-        { model: Comment, attributes: ["content"] },
+        { model: User, attributes: [username] },
+        { model: Comment, attributes: ["commentText"] },
       ],
-    });
-    res.json(response);
-  } catch (err) {
-    res.status(500);
-  }
+    })
+    .then((dbPostData) => res.json(dbPostData))
+    .catch((err) => res.status(400).json(err));
 });
 
 router.get("/:id", async (req, res) => {
