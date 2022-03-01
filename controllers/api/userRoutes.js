@@ -14,6 +14,37 @@ router.get("/", (req, res) => {
     });
 });
 
+// get one
+router.get("/:id", (req, res) => {
+  User.findOne({
+    attributes: { exclude: ["password"] },
+    where: {
+      id: req.params.id,
+    },
+    include: [
+      {
+        model: Post,
+        attributes: ["id", "title", "post_body"],
+      },
+      {
+        model: Comment,
+        attributes: ["id", "commentText"],
+      },
+    ],
+  })
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        res.status(404).json({ message: "No user found with this id" });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
 // the user needs to login
 router.post("/login", async (req, res) => {
   try {
