@@ -1,17 +1,22 @@
-<nav class="navbar sticky-top navbar-light bg-light">
-    <h3>
-        <a id="title" href="/">BlogPost</a>
-    </h3>
-    <div>
-        {{#if loggedIn}}
-            <a href="/logout"><button id="logout" class="btn-no-style">logout</button></a>
-            
-        {{else}}
-            <div id="menu">
-                <a href="/login">Login</a>
-                <a href="/signup">Signup</a>
+<header>
+  <nav>
+    <h1 id="logo-btn">The Tech Blog</h1>
+    <div id="button-container">
+      {{#if loggedIn}}
+        {{#unless dashboard}}
+          {{! if logged in and not on Dashboard }}
+          <button id="dashboard-btn">Dashboard</button>
+        {{/unless}}
+        {{! if logged in }}
+        <button id="logout-btn">Logout</button>
+      {{else}}
+        {{! if not logged in and at home}}
+        {{#if home}}
+          <button id="login-btn">Login</button>
+          <button id="signup-btn">Sign Up</button>
         {{/if}}
-                <a href="/map">Map</a>
-            </div>
+        {{! if not at home }}
+      {{/if}}
     </div>
-</nav>
+  </nav>
+</header>
