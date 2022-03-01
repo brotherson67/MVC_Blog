@@ -12,29 +12,21 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", async (req, res) => {
-  try {
-    const response = await Comment.findOne({
-      where: { id: req.params.id },
-      attributes: ["id", "content", "post_id", "user_id", "createdAt"],
-      include: { model: User, attributes: ["username"] },
-    });
-    res.json(response);
-  } catch (err) {
-    res.status(500);
-  }
+router.get("/:id", (req, res) => {
+  Comment.findOne({ id: req.params.id })
+    .then((dbCommentData) => res.json(dbCommentData))
+    .catch((err) => res.status(400).json(err));
 });
 
 router.post("/", withAuth, async (req, res) => {
-  try {
-    const response = await Comment.create({
-      content: req.body.content,
+  if (req.session) {
+    Comment.create({
+      commentText: req.body.commentText,
       post_id: req.body.post_id,
-      user_id: req.session.user_id,
-    });
-    res.json(response);
-  } catch (err) {
-    res.status(500);
+      user_id: req.body.user_id,
+    })
+      .then((dbCommentData) => res.json(dbCommentData))
+      .catch((err) => res.status(400).json(err));
   }
 });
 
