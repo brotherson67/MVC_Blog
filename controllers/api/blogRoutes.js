@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { User, Comment, blogPost } = require("../../model");
 const sequelize = require("../../config/connection");
-const withAuth = require("../../utils/auth");
+const Auth = require("../../utils/auth");
 const { resolve } = require("path/posix");
 
 // GET /post/
@@ -39,33 +39,42 @@ router.get("/:id", (req, res) => {
 });
 
 // POST
-router.post("/", async (req, res) => {
-  try {
-    const response = await Post.create({
-      title: req.body.title,
-      content: req.body.content,
-      user_id: req.session.user_id,
+router.post("/", Auth, (req, res) => {
+  Post.create({
+    title: req.body.title,
+    post_content: req.body.post_body,
+    user_id: req.session.user_id,
+  })
+    .then((dbPostData) => res.json(dbPostData))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
     });
-    res.json(response);
-  } catch (err) {
-    res.status(500);
-  }
 });
 
-router.put("/:id", async (req, res) => {
-  try {
-    const response = await Post.update(
-      { title: req.body.title, content: req.body.content },
-      { where: { id: req.params.id } }
-    );
-    if (!response) {
-      res.status(404);
-      return;
+router.put("/:id", Auth, (req, res) => {
+  Post.update(
+    {
+      title: req.body.title,
+      post_content: req.body.post_body,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
     }
-    res.json(response);
-  } catch (err) {
-    res.status(500);
-  }
+  )
+    .then((dbPostData) => {
+      if (!dbPostData) {
+        res.status(404).json({ message: "No post found with this id" });
+        return;
+      }
+      res.json(dbPostData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
