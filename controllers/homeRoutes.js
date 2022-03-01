@@ -1,7 +1,7 @@
 // HomeRoutes is what directs to the different handlebars files
 const router = require("express").Router();
 const sequelize = require("../config/connection");
-const { blogPosts } = require("../model");
+const { blogPosts, User, Comment } = require("../model");
 
 router.get("/", (req, res) => {
   console.log("You're getting the homepage");
