@@ -72,21 +72,22 @@ router.post("/login", async (req, res) => {
 });
 
 // POST /user/signup
-router.post("/signup", async (req, res) => {
-  try {
-    const response = await User.create({
-      username: req.body.username,
-      password: req.body.password,
+router.post("/signup", (req, res) => {
+  User.create({
+    username: req.body.username,
+    password: req.body.password,
+  })
+    .then((dbUserData) => {
+      req.session.save(() => {
+        req.session.username = response.username;
+        req.session.user_id = response.id;
+        req.session.loggedIn = true;
+        res.json(dbUserData);
+      });
+    })
+    .catch((err) => {
+      res.status(500).json(err);
     });
-    req.session.save(() => {
-      req.session.username = response.username;
-      req.session.user_id = response.id;
-      req.session.loggedIn = true;
-      res.json(response);
-    });
-  } catch (err) {
-    res.status(500);
-  }
 });
 
 module.exports = router;
