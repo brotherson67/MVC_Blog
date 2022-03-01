@@ -1,4 +1,4 @@
-function withAuth(req, res, next) {
+function Auth(req, res, next) {
   if (!req.session.loggedIn) {
     res.redirect("/login");
   } else {
@@ -6,4 +6,4 @@ function withAuth(req, res, next) {
   }
 }
 
-module.exports = withAuth;
+module.exports = Auth;
