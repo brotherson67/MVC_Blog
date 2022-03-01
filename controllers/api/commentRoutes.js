@@ -3,16 +3,13 @@ const withAuth = require("../../utils/auth");
 const { User, Comment } = require("../../model");
 
 // get all the comments
-router.get("/", async (req, res) => {
-  try {
-    const response = await Comment.findAll({
-      attributes: ["id", "content", "post_id", "user_id", "createdAt"],
-      include: { model: User, attributes: ["username"] },
+router.get("/", (req, res) => {
+  Comment.findAll({})
+    .then((dbCommentData) => res.json(dbCommentData))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
     });
-    res.json(response);
-  } catch (err) {
-    res.status(500);
-  }
 });
 
 router.get("/:id", async (req, res) => {
