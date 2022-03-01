@@ -11,28 +11,20 @@ const app = express();
 
 // Create sequelize session
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
-let sess;
-if (process.env.JAWSDB_SC) {
-  sess = {
-    secret: process.env.JAWSDB_SC,
-    cookie: {},
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({ db: sequelize }),
-  };
-} else {
-  sess = {
-    secret: "somerandomstring",
-    cookie: {},
-    resave: false,
-    saveUninitialized: true,
-    store: new SequelizeStore({ db: sequelize }),
-  };
-}
+
+const sess = {
+  secret: "somerandomstring",
+  cookie: {},
+  resave: true,
+  rolling: true,
+  saveUninitialized: true,
+  store: new SequelizeStore({ db: sequelize }),
+};
+
 app.use(session(sess));
 
 // Set server engine to handlebars
-const hbs = exphbs.create({});
+const hbs = exphbs.create({ helpers });
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
