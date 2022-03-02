@@ -98,6 +98,18 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+// post /user/logout
+router.post("/logout", (req, res) => {
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
+});
+
 // POST /user/signup
 router.post("/signup", (req, res) => {
   User.create({
@@ -143,17 +155,6 @@ router.post("/login", (req, res) => {
       res.json({ message: "logged in" });
     });
   });
-});
-
-// post /user/logout
-router.post("/logout", (req, res) => {
-  if (req.session.loggedIn) {
-    req.session.destroy(() => {
-      res.status(204).end();
-    });
-  } else {
-    res.status(404).end();
-  }
 });
 
 module.exports = router;
