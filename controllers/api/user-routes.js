@@ -110,51 +110,43 @@ router.post("/logout", (req, res) => {
   }
 });
 
-// POST /user/signup
-router.post("/signup", (req, res) => {
-  User.create({
-    username: req.body.username,
-    password: req.body.password,
+router.put("/:id", (req, res) => {
+  User.update(req.body, {
+    individualHooks: true,
+    where: {
+      id: req.params.id,
+    },
   })
     .then((dbUserData) => {
-      req.session.save(() => {
-        req.session.username = dbUserData.username;
-        req.session.user_id = dbUserData.id;
-        req.session.loggedIn = true;
-        res.json(dbUserData);
-      });
+      if (!dbUserData) {
+        res.status(404).json({ message: "No user found with this id" });
+        return;
+      }
+      res.json(dbUserData);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json(err);
     });
 });
 
-// post /user/login
-router.post("/login", (req, res) => {
-  User.findOne({
+router.delete("/:id", (req, res) => {
+  User.destroy({
     where: {
-      username: req.body.username,
+      id: req.params.id,
     },
-  }).then((dbUserData) => {
-    if (!dbUserData) {
-      res.status(400).json({ message: "sorry something went wrong" });
-      return;
-    }
-
-    const correctPW = dbUserData.checkPassword(req.body.password);
-    if (!correctPW) {
-      res.status(400).json({ message: "sorry something went wrong" });
-      return;
-    }
-
-    req.session.save(() => {
-      req.session.user_id = dbUserData.id;
-      req.session.username = dbUserData.username;
-      req.session.loggedIn = true;
-
-      res.json({ message: "logged in" });
+  })
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        res.status(404).json({ message: "No user found with this id" });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
     });
-  });
 });
 
 module.exports = router;
