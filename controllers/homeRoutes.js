@@ -5,23 +5,30 @@ const { blogPosts, User, Comment } = require("../model");
 
 router.get("/", (req, res) => {
   console.log("======================");
-  Post.findAll({
-    attributes: ["id", "contents", "title", "created_at"],
-    include: [
-      {
-        model: Comment,
-        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
-        include: {
+  blogPosts
+    .findAll({
+      attributes: ["id", "contents", "title", "created_at"],
+      include: [
+        {
+          model: Comment,
+          attributes: [
+            "id",
+            "comment_text",
+            "post_id",
+            "user_id",
+            "created_at",
+          ],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
+        {
           model: User,
           attributes: ["username"],
         },
-      },
-      {
-        model: User,
-        attributes: ["username"],
-      },
-    ],
-  })
+      ],
+    })
     .then((dbPostData) => {
       const posts = dbPostData.map((post) => post.get({ plain: true }));
 
@@ -38,23 +45,30 @@ router.get("/", (req, res) => {
 
 router.get("/posts", (req, res) => {
   console.log("======================");
-  Post.findAll({
-    attributes: ["id", "contents", "title", "created_at"],
-    include: [
-      {
-        model: Comment,
-        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
-        include: {
+  blogPosts
+    .findAll({
+      attributes: ["id", "contents", "title", "created_at"],
+      include: [
+        {
+          model: Comment,
+          attributes: [
+            "id",
+            "comment_text",
+            "post_id",
+            "user_id",
+            "created_at",
+          ],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
+        {
           model: User,
           attributes: ["username"],
         },
-      },
-      {
-        model: User,
-        attributes: ["username"],
-      },
-    ],
-  })
+      ],
+    })
     .then((dbPostData) => {
       const posts = dbPostData.map((post) => post.get({ plain: true }));
 
@@ -63,6 +77,41 @@ router.get("/posts", (req, res) => {
         loggedIn: req.session.loggedIn,
       });
     })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+router.get("/post/:id", (req, res) => {
+  blogPosts
+    .findOne({
+      where: {
+        id: req.params.id,
+      },
+      attributes: ["id", "contents", "title", "created_at"],
+      include: [
+        {
+          model: Comment,
+          attributes: [
+            "id",
+            "comment_text",
+            "post_id",
+            "user_id",
+            "created_at",
+          ],
+          include: {
+            model: User,
+            attributes: ["username"],
+          },
+        },
+        {
+          model: User,
+          attributes: ["username"],
+        },
+      ],
+    })
+    .then((dbPostData) => {})
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
