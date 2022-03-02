@@ -1,34 +1,27 @@
 // HomeRoutes is what directs to the different handlebars files
 const router = require("express").Router();
 const sequelize = require("../config/connection");
-const { blogPosts, User, Comment } = require("../model");
+const { Post, User, Comment } = require("../model");
 
 router.get("/", (req, res) => {
   console.log("======================");
-  blogPosts
-    .findAll({
-      attributes: ["id", "contents", "title", "created_at"],
-      include: [
-        {
-          model: Comment,
-          attributes: [
-            "id",
-            "comment_text",
-            "post_id",
-            "user_id",
-            "created_at",
-          ],
-          include: {
-            model: User,
-            attributes: ["username"],
-          },
-        },
-        {
+  Post.findAll({
+    attributes: ["id", "contents", "title", "created_at"],
+    include: [
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
           model: User,
           attributes: ["username"],
         },
-      ],
-    })
+      },
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  })
     .then((dbPostData) => {
       const posts = dbPostData.map((post) => post.get({ plain: true }));
 
@@ -45,30 +38,23 @@ router.get("/", (req, res) => {
 
 router.get("/posts", (req, res) => {
   console.log("======================");
-  blogPosts
-    .findAll({
-      attributes: ["id", "contents", "title", "created_at"],
-      include: [
-        {
-          model: Comment,
-          attributes: [
-            "id",
-            "comment_text",
-            "post_id",
-            "user_id",
-            "created_at",
-          ],
-          include: {
-            model: User,
-            attributes: ["username"],
-          },
-        },
-        {
+  Post.findAll({
+    attributes: ["id", "contents", "title", "created_at"],
+    include: [
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
           model: User,
           attributes: ["username"],
         },
-      ],
-    })
+      },
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  })
     .then((dbPostData) => {
       const posts = dbPostData.map((post) => post.get({ plain: true }));
 
@@ -84,33 +70,26 @@ router.get("/posts", (req, res) => {
 });
 
 router.get("/post/:id", (req, res) => {
-  blogPosts
-    .findOne({
-      where: {
-        id: req.params.id,
-      },
-      attributes: ["id", "contents", "title", "created_at"],
-      include: [
-        {
-          model: Comment,
-          attributes: [
-            "id",
-            "comment_text",
-            "post_id",
-            "user_id",
-            "created_at",
-          ],
-          include: {
-            model: User,
-            attributes: ["username"],
-          },
-        },
-        {
+  Post.findOne({
+    where: {
+      id: req.params.id,
+    },
+    attributes: ["id", "contents", "title", "created_at"],
+    include: [
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
           model: User,
           attributes: ["username"],
         },
-      ],
-    })
+      },
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  })
     .then((dbPostData) => {
       if (!dbPostData) {
         res.status(404).json({ message: "No post found with this id" });
