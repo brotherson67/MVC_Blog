@@ -1,22 +1,22 @@
-const blogPost = require("./blogPosts");
+const posts = require("./posts");
 const User = require("./user");
 const Comment = require("./comments");
 
 //associations
-User.hasMany(blogPost, {
+User.hasMany(posts, {
   foreignKey: "user_id",
 });
 
-blogPost.belongsTo(User, {
+posts.belongsTo(User, {
   foreignKey: "user_id",
   onDelete: "SET NULL",
 });
 
-blogPost.hasMany(Comment, {
+posts.hasMany(Comment, {
   foreignKey: "post_id",
 });
 
-Comment.belongsTo(blogPost, {
+Comment.belongsTo(posts, {
   foreignKey: "post_id",
 });
 
@@ -29,7 +29,7 @@ Comment.belongsTo(User, {
 });
 
 module.exports = {
-  blogPost,
+  posts,
   User,
   Comment,
 };

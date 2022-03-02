@@ -9,7 +9,6 @@ blogPosts.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoIncrement: true,
     },
     title: {
       type: DataTypes.STRING,
@@ -32,10 +31,10 @@ blogPosts.init(
   },
   {
     sequelize,
-    modelName: "blogPosts",
+    modelName: "posts",
     freezeTableName: true,
     underscored: true,
   }
 );
 
-module.exports = blogPosts;
+module.exports = posts;
