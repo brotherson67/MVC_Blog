@@ -1,23 +1,72 @@
 // HomeRoutes is what directs to the different handlebars files
 const router = require("express").Router();
 const sequelize = require("../config/connection");
-const { blogPosts } = require("../model");
+const { blogPosts, User, Comment } = require("../model");
 
 router.get("/", (req, res) => {
-  console.log("You're getting the homepage");
-  res.render("homepage", {
-    id: 1,
-    post_url: "https://handlebarsjs.com/guide/",
-    title: "Hanglebars Docs",
-  });
+  console.log("======================");
+  Post.findAll({
+    attributes: ["id", "contents", "title", "created_at"],
+    include: [
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
+          model: User,
+          attributes: ["username"],
+        },
+      },
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  })
+    .then((dbPostData) => {
+      const posts = dbPostData.map((post) => post.get({ plain: true }));
+
+      res.render("homepage", {
+        posts,
+        loggedIn: req.session.loggedIn,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
-router.get("/login", (req, res) => {
-  res.render("login", { login: true });
-});
+router.get("/posts", (req, res) => {
+  console.log("======================");
+  Post.findAll({
+    attributes: ["id", "contents", "title", "created_at"],
+    include: [
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
+          model: User,
+          attributes: ["username"],
+        },
+      },
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  })
+    .then((dbPostData) => {
+      const posts = dbPostData.map((post) => post.get({ plain: true }));
 
-router.get("/signup", (req, res) => {
-  res.render("signup");
+      res.render("homepage", {
+        posts,
+        loggedIn: req.session.loggedIn,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
