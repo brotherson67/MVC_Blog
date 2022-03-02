@@ -1,25 +1,46 @@
-{{> nav }}
-<div id="single-post-container">
-    <div id="post-title-container">
-        <div id="post-title">{{post.title}}</div>
-        <div id="post-info">Posted by {{post.user.username}} on {{format_date post.createdAt}}</div>
-    </div>
-    <div id="post-content">{{post.content}}</div>
-{{#each post.comments}}
-    <div id="comment-container">
-        <div id="comment-content">{{content}}</div>
-        <div id="comment-info">Comment by {{user.username}} on {{format_date createdAt}}</div>
-    </div>
-{{/each}}
-</div>
+{{> post-info post}}
+
 {{#if loggedIn}}
-<form id="comment-form">
-    <textarea id="comment" placeholder="Comment"></textarea>
-    <button type="submit" id="comment-btn">Comment</button>
+<div class="post">
+  <div class="card">
+    <h2> {{post.title}}</h2>
+    <div>
+      {{post.User.username}} posted on {{ format+date post.created_at}}
+    </div>
+    <div class="card-body">
+      {{post.body}}
+    </div>
+  </div>
+</div>
+  {{#if post.comment}}
+<section class="card">
+  <div class="card-header">
+    <h2>comments</h2>
+  </div>
+  <div class="card">
+    {{#each post.comment}}
+    <div>
+      <p>
+        {{body}}
+      </p>
+    </div>
+  </div>
+</section>
+<form class="comment-form">
+  <div>
+    <textarea name="comment-body"></textarea>
+  </div>
+
+  <div>
+    <button type="submit">add comment</button>
+    <button type="button" class="comment-btn">comment</button>
+  </div>
 </form>
-<script src="/javascript/logout.js"></script>
-<script src="/javascript/dashboard.js"></script>
-<script src='/javascript/create-comment.js'></script>
-{{else}} 
-<script src="/javascript/login.js"></script>
+{{/if}}
+
+{{> comments post.comments}}
+
+{{#if loggedIn}}
+<script src="/javascript/comment.js"></script>
+<script src="/javascript/upvote.js"></script>
 {{/if}}
