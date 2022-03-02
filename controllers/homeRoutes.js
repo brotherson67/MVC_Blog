@@ -1,7 +1,8 @@
-// HomeRoutes is what directs to the different handlebars files
 const router = require("express").Router();
 const sequelize = require("../config/connection");
-const { Post, User, Comment } = require("../model");
+const { Post, User, Comment } = require("../models");
+
+// get all posts for homepage
 
 router.get("/", (req, res) => {
   console.log("======================");
@@ -69,6 +70,7 @@ router.get("/posts", (req, res) => {
     });
 });
 
+// get single post
 router.get("/post/:id", (req, res) => {
   Post.findOne({
     where: {
@@ -107,6 +109,15 @@ router.get("/post/:id", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
+
+  res.render("./login");
 });
 
 module.exports = router;
