@@ -1,202 +1,109 @@
-:root {
-  --one: #27241d;
-  --two: #423d33;
-  --three: #504a40;
-  --four: #625d52;
-  --five: #857f72;
-  --six: #a39e93;
-  --seven: #b8b2a7;
-  --eight: #d3cec4;
-  --nine: #e8e6e1;
-  --ten: #faf9f7;
-  --eleven: rgb(233, 220, 103);
+* {
+  color: #21a5b7;
+  font-family: "Roboto", sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+#nav {
+  background-color: #333333;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  text-decoration: none;
+  padding: 2%;
+  align-items: right;
+  margin-bottom: 4%;
+  font-size: 150%;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
-  background-color: var(--one);
-  color: var(--eight);
-  font-family: "Raleway", sans-serif;
+  /* background-image: url('https://image.freepik.com/free-vector/white-background-with-blue-tech-hexagon_1017-19366.jpg'); */
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: var(--two);
-  box-shadow: 10px 1px 15px black;
-}
-
-nav h1 {
-  color: var(--eleven);
-  cursor: pointer;
-}
-
-nav h1:hover {
-  color: rgb(187, 176, 73);
-}
-
-#button-container {
-  display: flex;
-}
-
-button {
-  padding: 5px;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--seven);
-  color: var(--one);
-  box-shadow: 5px 5px 3px;
-}
-
-button:hover {
-  background-color: var(--five);
-}
-
-#post-container,
-#single-post-container {
-  background-color: var(--three);
-  margin: 20px auto;
-  /* padding: 5px; */
-  border: 1px solid var(--five);
-  border-radius: 2px;
-  width: 85%;
-}
-
-#post-title {
+#title {
   text-decoration: none;
-  padding: 5px 0;
-  color: var(--ten);
-  font-size: 22px;
-}
-
-#post-title-container {
-  background-color: var(--two);
-  width: 100%;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#post-content {
-  padding: 5px;
-  font-size: 18px;
-}
-
-#post-container #post-title:hover {
-  color: var(--seven);
-}
-
-#post-info {
-  color: var(--eight);
-  margin: 2px;
+  font-size: 200%;
   font-style: italic;
-  font-size: 12px;
-  text-align: right;
 }
 
-#post-btn-container,
-#dash-btn-container {
-  text-align: center;
-}
-
-#edit-btn,
-#delete-btn,
-#create-btn,
-#update-btn,
-#post-btn,
-.form-btn {
-  padding: 15px;
-}
-
-#header,
-#header {
-  margin: 15px;
-  text-align: center;
-}
-
-#comment-container {
-  background-color: var(--two);
-  margin: 10px auto;
-  padding: 5px;
-  border: 1px solid var(--five);
-  border-radius: 5px;
-  width: 95%;
-}
-
-#comment-content {
-  margin: 5px;
-}
-
-#comment-info {
-  text-align: right;
-  font-style: italic;
-  font-size: 12px;
-}
-
-#comment-form {
-  margin: 10px auto;
+#login-form {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 50%;
 }
 
-#comment-form #comment {
-  height: 50px;
-  padding: 5px;
-  background-color: var(--eight);
-}
-
-#comment-btn {
-  margin: 10px auto;
-  width: 50%;
-}
-
-#post-form label {
-  padding: 3px;
-}
-
-#post-form input,
-#login-form input,
-#signup-form input {
-  padding: 3px;
-}
-
-#post-form #content {
-  padding: 5px;
-  height: 75px;
-}
-
-#update-btn,
-#create-btn,
-.form-btn {
-  margin: 10px auto;
-  width: 25%;
-}
-
-#no-account {
+.form-title {
+  font-size: 200%;
   text-align: center;
 }
 
-#login-form,
-#signup-form,
+.login-wrap,
+.posts,
+.your-post {
+  background-color: #ffffff;
+  width: 40%;
+  height: 60%;
+  margin: 7em auto;
+  border-radius: 0.3em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+  float: left;
+  padding: 2%;
+  /* position: absolute;
+    right: 3%;
+    bottom: 3%; */
+}
+.newpost-wrap {
+  width: 30%;
+}
+
 #post-form {
-  margin: 10px auto;
-  padding: 10px;
+  width: 300%;
+  margin-left: 7%;
+}
+
+#email-login,
+#password-login {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-top: 20px;
+  margin-bottom: 50px;
+  margin-left: 46px;
+  text-align: center;
+  margin-bottom: 27px;
+  font-family: "Ubuntu", sans-serif;
+  background-image: url("https://thumbs.dreamstime.com/b/abstract-tech-background-futuristic-technology-interface-vecto-vector-illustration-many-geometric-shape-62682938.jpg");
+  background-repeat: no-repeat;
+}
+
+#login-btn {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #243151, #21a5b7);
+  border: 0;
+  padding: 10px 40px 10px 40px;
+  font-family: "Ubuntu", sans-serif;
+  margin-left: 10%;
+  margin-top: 10px;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
   display: flex;
+  margin-left: 34%;
+}
+
+#post-title,
+#new-post-content {
   justify-content: center;
-  flex-direction: column;
-  width: 50%;
-  background-color: var(--two);
-  border-radius: 2px;
-  border: 1px solid var(--five);
+  width: 90%;
+  padding: 2%;
+  margin: 2%;
 }
