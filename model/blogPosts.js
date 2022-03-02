@@ -15,7 +15,7 @@ blogPosts.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    post_body: {
+    contents: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -25,6 +25,9 @@ blogPosts.init(
         model: "user",
         key: "id",
       },
+    },
+    date: {
+      type: DataTypes.DATE,
     },
   },
   {
