@@ -1,19 +1,24 @@
-<header>
-  <nav>
-    <h1 id="logo-btn">The Tech Blog</h1>
-    <div id="button-container">
-      {{#if loggedIn}}
-        {{#unless dashboard}}
-          <button id="dashboard-btn">Dashboard</button>
-        {{/unless}}
+<link rel="stylesheet" href="./styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
 
-        <button id="logout-btn">Logout</button>
-      {{else}}
-        {{#if home}}
-          <button id="login-btn">Login</button>
-          <button id="signup-btn">Sign Up</button>
-        {{/if}}
-      {{/if}}
-    </div>
-  </nav>
-</header>
+
+
+<nav id="nav" class="navbar sticky-top navbar-light bg-light">
+        <h1>
+          <a id="title" href="/">Just tech Blog </a>
+        </h1>
+          {{#if loggedIn}}
+          <a href="/logout"><button id="logout" class="btn-no-style">logout</button></a>
+          
+          {{else}}
+          <div id="menu">
+             <a href="/login">Login</a>
+             <a href="/signup">Signup</a>
+          {{/if}}
+              <a href="/dashboard">dashboard</a>
+             <a href="/posts">Posts</a>
+            </ul>
+          </div>
+      </nav>
