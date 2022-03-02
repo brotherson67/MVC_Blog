@@ -5,6 +5,7 @@ const withAuth = require("../../utils/auth");
 
 // GET /post/
 router.get("/api/posts", (req, res) => {
+  console.log("======================");
   Post.findAll({
     attributes: ["id", "title", "created_at"],
     include: [
@@ -27,26 +28,6 @@ router.get("/api/posts", (req, res) => {
       console.log(err);
       res.status(500).json(err);
     });
-
-  router.get("/:id", (req, res) => {
-    blogPost
-      .findOne({
-        where: { id: req.params.id },
-        attributes: ["id", "title", "post_body", "user_id"],
-        include: [
-          { model: User, attributes: [username] },
-          { model: Comment, attributes: ["commentText"] },
-        ],
-      })
-      .then((dbPostData) => {
-        if (!dbPostData) {
-          res.status(404).json({ message: "sorry no post found with that id" });
-          return;
-        }
-        res.json(dbPostData);
-      })
-      .catch((err) => res.status(500).json(err));
-  });
 });
 
 router.get("api/posts/:id", (req, res) => {
@@ -83,11 +64,25 @@ router.get("api/posts/:id", (req, res) => {
     });
 });
 
-router.put("/:id", Auth, (req, res) => {
+router.post("/api/posts", withAuth, (req, res) => {
+  // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
+  Post.create({
+    title: req.body.title,
+    contents: req.body.contents,
+    user_id: req.session.user_id,
+  })
+    .then((dbPostData) => res.json(dbPostData))
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+router.put("api/post/:id", withAuth, (req, res) => {
   Post.update(
     {
       title: req.body.title,
-      post_content: req.body.post_body,
+      contents: req.body,
     },
     {
       where: {
@@ -95,6 +90,26 @@ router.put("/:id", Auth, (req, res) => {
       },
     }
   )
+    .then((dbPostData) => {
+      if (!dbPostData) {
+        res.status(404).json({ message: "No post found with this id" });
+        return;
+      }
+      res.json(dbPostData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+router.delete("/api/post/:id", withAuth, (req, res) => {
+  console.log("id", req.params.id);
+  Post.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
     .then((dbPostData) => {
       if (!dbPostData) {
         res.status(404).json({ message: "No post found with this id" });
